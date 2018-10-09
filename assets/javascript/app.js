@@ -16,8 +16,7 @@ var localKey = ""
 var localChoice = ""
 var player1Wins = 0
 var player2Wins = 0
-var player1Exists = false
-var player2Exists = false
+var players = []
 
 var gameMechanic = function(){
   if(player1Choice === player2Choice){
@@ -39,20 +38,12 @@ var gameMechanic = function(){
 
 $("#create-name").click(function(event){
   event.preventDefault()
-  if (player1Exists === false){
+  if (players.length < 2){
     localName = $("#display-name").val().trim()
     database.ref().push({
       name: localName,
       choice: "none"
     })
-    player1Exists = true
-  } else if (player2Exists === false){
-    localName = $("#display-name").val().trim()
-    database.ref().push({
-      name: localName,
-      choice: "none"
-    })
-    player2Exists = true
   } else {
     console.log("Full")
   }
@@ -102,7 +93,14 @@ $("#scissors").click(function(){
 database.ref().on("child_added", function(snapshot){
   if (snapshot.val().name === localName) {
     localKey = snapshot.key
+    database.ref(localKey).onDisconnect().remove()
   }
+  players.push(snapshot.val().name)
+  console.log(players)
 })
 
-Object.keys(snapshot.val()).length
+database.ref().on("child_removed", function(snapshot){
+  players.splice(players.indexOf(snapshot.val().name), 1)
+  console.log(players)
+})
+
