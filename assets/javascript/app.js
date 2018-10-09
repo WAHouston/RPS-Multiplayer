@@ -20,6 +20,7 @@ var players = []
 
 var gameMechanic = function(){
   if(localPlayerChoice === opponentChoice && localPlayerChoice !== "none"){
+    $("#action").empty()
     $("#action").append("<p>Tie</p>")
     localChoice = "none"
     opponentChoice = "none"
@@ -29,6 +30,7 @@ var gameMechanic = function(){
       wins: localWins
     })
   } else if (localPlayerChoice === "rock" && opponentChoice === "scissors"){
+    $("#action").empty()
     $("#action").append("<p>You Win!</p>")
     localWins++
     localChoice = "none"
@@ -39,6 +41,7 @@ var gameMechanic = function(){
       wins: localWins
     })
   } else if (localPlayerChoice === "scissors" && opponentChoice === "paper"){
+    $("#action").empty()
     $("#action").append("<p>You Win!</p>")
     localWins++
     localChoice = "none"
@@ -49,6 +52,7 @@ var gameMechanic = function(){
       wins: localWins
     })
   } else if (localPlayerChoice === "paper" && opponentChoice === "rock"){
+    $("#action").empty()
     $("#action").append("<p>You Win!</p>")
     localWins++
     localChoice = "none"
@@ -59,6 +63,7 @@ var gameMechanic = function(){
       wins: localWins
     })
   } else {
+    $("#action").empty()
     $("#action").append("<p>You Lose!</p>")
     opponentWins++
     localChoice = "none"
