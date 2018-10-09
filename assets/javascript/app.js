@@ -21,12 +21,12 @@ var players = []
 var gameMechanic = function(){
   if(localPlayerChoice === opponentChoice && localPlayerChoice !== "none"){
     $("#action").append("<p>Tie</p>")
-    localChoice = ""
-    opponentChoice = ""
+    localChoice = "none"
+    opponentChoice = "none"
     database.ref(localKey).set({
       name: localName,
       choice: "none",
-      Wins: localWins
+      wins: localWins
     })
   } else if (localPlayerChoice === "rock" && opponentChoice === "scissors"){
     $("#action").append("<p>You Win!</p>")
@@ -36,7 +36,7 @@ var gameMechanic = function(){
     database.ref(localKey).set({
       name: localName,
       choice: "none",
-      Wins: localWins
+      wins: localWins
     })
   } else if (localPlayerChoice === "scissors" && opponentChoice === "paper"){
     $("#action").append("<p>You Win!</p>")
@@ -46,7 +46,7 @@ var gameMechanic = function(){
     database.ref(localKey).set({
       name: localName,
       choice: "none",
-      Wins: localWins
+      wins: localWins
     })
   } else if (localPlayerChoice === "paper" && opponentChoice === "rock"){
     $("#action").append("<p>You Win!</p>")
@@ -56,18 +56,21 @@ var gameMechanic = function(){
     database.ref(localKey).set({
       name: localName,
       choice: "none",
-      Wins: localWins
+      wins: localWins
     })
   } else {
     $("#action").append("<p>You Lose!</p>")
+    opponentWins++
     localChoice = "none"
     opponentChoice = "none"
     database.ref(localKey).set({
       name: localName,
       choice: "none",
-      Wins: localWins
+      wins: localWins
     })
   }
+  $("#local-wins").html("<p>Wins:" + localWins + "<p>")
+  $("#opponent-wins").html("<p>Losses:" + opponentWins + "<p>")
 }
 
 $("#create-name").click(function(event){
@@ -76,10 +79,10 @@ $("#create-name").click(function(event){
     localName = $("#display-name").val().trim()
     database.ref().push({
       name: localName,
-      choice: "none"
+      choice: "none",
+      wins: localWins
     })
   } else {
-    console.log("Full")
   }
 
   $("#name-form").empty()
@@ -88,39 +91,36 @@ $("#create-name").click(function(event){
 $("#rock").click(function(){
   if (localChoice === "none"){
     localChoice = "rock"
-    console.log(localChoice)
     database.ref(localKey).set({
       choice: "rock",
-      name: localName
+      name: localName,
+      wins: localWins
     })
   } else {
-    console.log("You have already chosen")
   }
 })
 
 $("#paper").click(function(){
   if (localChoice === "none"){
     localChoice = "paper"
-    console.log(localChoice)
     database.ref(localKey).set({
       choice: "paper",
-      name: localName
+      name: localName,
+      wins: localWins
     })
   } else {
-    console.log("You have already chosen")
   }
 })
 
 $("#scissors").click(function(){
   if (localChoice === "none"){
     localChoice = "scissors"
-    console.log(localChoice)
     database.ref(localKey).set({
       choice: "scissors",
-      name: localName
+      name: localName,
+      wins: localWins
     })
   } else {
-    console.log("You have already chosen")
   }
 })
 
@@ -130,21 +130,20 @@ database.ref().on("child_added", function(snapshot){
     database.ref(localKey).onDisconnect().remove()
   }
   players.push(snapshot.val().name)
-  console.log(players)
 })
 
 database.ref().on("child_removed", function(snapshot){
   players.splice(players.indexOf(snapshot.val().name), 1)
-  console.log(players)
 })
+
 
 database.ref().on("child_changed", function(snapshot){
   if (snapshot.val().name === localName){
     localPlayerChoice = snapshot.val().choice
-    console.log("You chose:" + localPlayerChoice)
+    localWins = snapshot.val().wins
   } else {
     opponentChoice = snapshot.val().choice
-    console.log("They chose:" + opponentChoice)
+    opponentWins = snapshot.val().wins
   }
   if (localPlayerChoice !== "none" && opponentChoice !== "none"){
     gameMechanic()
