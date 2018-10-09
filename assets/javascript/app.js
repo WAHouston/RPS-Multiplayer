@@ -9,16 +9,12 @@ var config = {
    firebase.initializeApp(config);
 
 var database = firebase.database()
-var player1 = ""
-var player2 = ""
 var player1Choice = ""
 var player2Choice = ""
+var localName = ""
+var localKey = ""
 var player1Wins = 0
 var player2Wins = 0
-
-
-
-
 
 var gameMechanic = function(){
   if(player1Choice === player2Choice){
@@ -37,3 +33,60 @@ var gameMechanic = function(){
     player2Wins++
   }
 }
+
+$("#create-name").click(function(event){
+  event.preventDefault()
+  localName = $("#display-name").val().trim()
+  database.ref().push({
+    name: localName,
+    choice: "none"
+  })
+  $("#name-form").empty()
+})
+
+$("#rock").click(function(){
+  if (localChoice === ""){
+    localChoice = "rock"
+    console.log(localChoice)
+    database.ref(localKey).set({
+      choice: "rock",
+      name: localName
+    })
+  } else {
+    console.log("You have already chosen")
+  }
+})
+
+$("#paper").click(function(){
+  if (localChoice === ""){
+    localChoice = "paper"
+    console.log(localChoice)
+    database.ref(localKey).set({
+      choice: "paper",
+      name: localName
+    })
+  } else {
+    console.log("You have already chosen")
+  }
+})
+
+$("#scissors").click(function(){
+  if (localChoice === ""){
+    localChoice = "scissors"
+    console.log(localChoice)
+    database.ref(localKey).set({
+      choice: "scissors",
+      name: localName
+    })
+  } else {
+    console.log("You have already chosen")
+  }
+})
+
+database.ref().on("child_added", function(snapshot){
+  if (snapshot.val().name === localName){
+    localKey = snapshot.key
+  } else {
+    console.log("Error")
+  }
+})
