@@ -107,39 +107,45 @@ $(document).on("click", "#chat-submit", function(event){
 })
 
 $("#rock").click(function(){
-  if (localChoice === "none"){
-    localChoice = "rock"
-    database.ref(localKey).set({
-      choice: "rock",
-      name: localName,
-      wins: localWins
-    })
-  } else {
-  }
+  if(localName !== "") {
+    if (localChoice === "none"){
+      localChoice = "rock"
+      $("#rock").addClass("chosen")
+      database.ref(localKey).set({
+        choice: "rock",
+        name: localName,
+        wins: localWins
+      })
+    } else {
+  }}
 })
 
 $("#paper").click(function(){
-  if (localChoice === "none"){
-    localChoice = "paper"
-    database.ref(localKey).set({
-      choice: "paper",
-      name: localName,
-      wins: localWins
-    })
-  } else {
-  }
+  if(localName !== "") {
+    if (localChoice === "none"){
+      localChoice = "paper"
+      $("#paper").addClass("chosen")
+      database.ref(localKey).set({
+        choice: "paper",
+        name: localName,
+        wins: localWins
+      })
+    } else {
+  }}
 })
 
 $("#scissors").click(function(){
-  if (localChoice === "none"){
-    localChoice = "scissors"
-    database.ref(localKey).set({
-      choice: "scissors",
-      name: localName,
-      wins: localWins
-    })
-  } else {
-  }
+  if(localName !== "") {
+    if (localChoice === "none"){
+      localChoice = "scissors"
+      $("#scissors").addClass("chosen")
+      database.ref(localKey).set({
+        choice: "scissors",
+        name: localName,
+        wins: localWins
+      })
+    } else {
+  }}
 })
 
 database.ref().on("child_added", function(snapshot){
@@ -159,6 +165,7 @@ database.ref().on("child_removed", function(snapshot){
 
 database.ref("chat").on("child_added", function(snapshot){
   $("#chat").append("<p>" + "<span>" + snapshot.val().name + ": " + "</span>" + snapshot.val().message + "</p>")
+  $("#chat").scrollTop($("#chat")[0].scrollHeight)
   database.ref("chat").set({
     
   })

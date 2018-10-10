@@ -1,0 +1,60 @@
+body{
+    background-color: darkgreen;
+}
+
+h1{
+    font-family: 'Permanent Marker', cursive;
+    text-align: center;
+    color: black;
+    font-size: 50px;
+    background-color: lightgray;
+    margin: 20px auto;
+    padding: 20px 20px 20px 20px;
+    width: 700px;
+}
+
+h2{
+    font-family: 'Black Ops One', cursive;
+    color: darkgreen;
+    font-size: 20px;
+    margin: 0px 0px 5px 0px;
+}
+
+section{
+    text-align: center;
+    margin: 20px auto;
+    padding: 20px 20px 20px 20px;
+    width: 700px;
+    height: 720px;
+    background-color: lightgrey;
+}
+
+img{
+    padding: 10px 10px 10px 10px;
+}
+
+.chosen{
+    background-color: darkgreen;
+}
+
+span{
+    font-size: 20px;
+    color: red;
+}
+
+p{
+    font-family: 'Special Elite', cursive;
+    color: rgb(54, 53, 53);
+    text-align: left;
+    font-size: 20px;
+}
+
+#action{
+    margin: 20px 0px 20px 0px;
+}
+
+#chat{
+
+    height: 300px;
+    overflow-y: auto;
+}
