@@ -17,6 +17,7 @@ var localKey = ""
 var localWins = 0
 var opponentWins = 0
 var players = []
+var chatMessage = ""
 
 var gameMechanic = function(){
   if(localPlayerChoice === opponentChoice && localPlayerChoice !== "none"){
@@ -87,10 +88,22 @@ $("#create-name").click(function(event){
       choice: "none",
       wins: localWins
     })
-  } else {
-  }
-
   $("#name-form").empty()
+  $("<form>").addClass("chat-form").appendTo("section")
+  $(".chat-form").append("<h2>Enter your message here:<h2>")
+  $("<input>").attr("type", "text").attr("id", "chat-message").appendTo(".chat-form")
+  $("<button>Submit</button>").attr("id", "chat-submit").appendTo(".chat-form")
+  }
+})
+
+$(document).on("click", "#chat-submit", function(event){
+  event.preventDefault()
+  chatMessage = $("#chat-message").val()
+  database.ref("chat").push({
+    message: chatMessage,
+    name: localName
+  })
+  $("#chat-message").val("")
 })
 
 $("#rock").click(function(){
@@ -139,10 +152,22 @@ database.ref().on("child_added", function(snapshot){
 
 database.ref().on("child_removed", function(snapshot){
   players.splice(players.indexOf(snapshot.val().name), 1)
+  database.ref("chat").set({
+
+  })
 })
 
+database.ref("chat").on("child_added", function(snapshot){
+  $("#chat").append("<p>" + "<span>" + snapshot.val().name + ": " + "</span>" + snapshot.val().message + "</p>")
+  database.ref("chat").set({
+    
+  })
+})
 
 database.ref().on("child_changed", function(snapshot){
+  if(snapshot.key === "chat"){
+    return
+  }
   if (snapshot.val().name === localName){
     localPlayerChoice = snapshot.val().choice
     localWins = snapshot.val().wins
